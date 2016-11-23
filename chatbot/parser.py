@@ -102,6 +102,9 @@ class parsing_class():
         student_first_major = student_first_major.replace(u'\xa0', u' ').replace("(","").replace(" ","")
 
         grade_name = [i.string for i in html.find("tr",class_="table_gray4").find_all("td")]
+        if '실외' in grade_name:
+            index_number = grade_name.index('실외')
+            grade_name[index_number] = '교외'
 
         grade_data = [i.string for i in html.find("tr",class_="table_w").find_all("td")]
         credits_completed = grade_data[1:-2]

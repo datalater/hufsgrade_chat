@@ -88,7 +88,7 @@ def message(request):
                         "1전공: "+str(p.grade_dict['1전공'])+"\n"+
                         "이중전공: "+str(p.grade_dict['이중전공'])+"\n"+
                         "2전공: "+str(p.grade_dict['2전공'])+"\n"+
-                        "실용(교양)외국어 :"+str(p.grade_dict['실외'])+"\n"+
+                        "교양(실용)외국어 :"+str(p.grade_dict['교외'])+"\n"+
                         "교양: "+str(p.grade_dict['교양'])+"\n"+
                         "부전공: "+str(p.grade_dict['부전공'])+"\n"+
                         "교직: "+str(p.grade_dict['교직'])+"\n"+
