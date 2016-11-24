@@ -45,7 +45,7 @@ def message(request):
             }
         }
 
-    elif content == "종합정보시스템 로그인":
+    elif user.step == 1:
         user.step = 2 # 2단계
         user.save()
         
@@ -60,7 +60,7 @@ def message(request):
         
         
     elif user.step == 2:
-        user.step = 3
+        user.step = 3 # 3단계
         user.hufs_id = content
         user.save()
         
@@ -77,36 +77,58 @@ def message(request):
         user.save()
         
         p = parsing_class()
-        p.login(user.hufs_id,user.hufs_pwd)
-        
-        response_json={
-            "message":{
-                "text": p.user_info1+"\n"+
-                        p.user_info2+"\n"+
-                        "\n"+
-                        "# 영역별 취득학점"+"\n"+"\n"+
-                        "1전공: "+str(p.grade_dict['1전공'])+"\n"+
-                        "이중전공: "+str(p.grade_dict['이중전공'])+"\n"+
-                        "2전공: "+str(p.grade_dict['2전공'])+"\n"+
-                        "교양(실용)외국어 :"+str(p.grade_dict['교외'])+"\n"+
-                        "교양: "+str(p.grade_dict['교양'])+"\n"+
-                        "부전공: "+str(p.grade_dict['부전공'])+"\n"+
-                        "교직: "+str(p.grade_dict['교직'])+"\n"+
-                        "자선: "+str(p.grade_dict['자선'])+"\n"+
-                        "총취득: "+str(p.grade_dict['총취득'])+"\n"
-                        +"\n"
-                        "총평점: "+str(p.grade_dict['총평점'])+"\n"+
-                        
-                        p.user_major_gpa
-                        
-                        +"\n"+"\n"+
-                        "재로그인하려면 채팅방 퇴장 후 재입장 바랍니다."
-                        
+        if p.login_check(user.hufs_id,user.hufs_pwd) == "잘못된 로그인입니다.":
+            user.step ==1
+            user.save()
+            
+            reponse_json={
+                "message":{
+                    "text": "잘못된 로그인입니다."
+                    },
+                "keyboard":{
+                "type": "buttons",
+                "buttons":[
+                    "종합정보시스템 로그인" # 키보드 버튼
+                    ]
+                }
             }
-        }
-        
-        user.hufs_pwd = content
-        user.save()
+            
+        else:
+            p.login(user.hufs_id,user.hufs_pwd)
+            user.step = 1
+            user.save()
+            
+            response_json={
+                "message":{
+                    "text": p.user_info1+"\n"+
+                            p.user_info2+"\n"+
+                            "\n"+
+                            "# 영역별 취득학점"+"\n"+"\n"+
+                            "1전공: "+str(p.grade_dict['1전공'])+"\n"+
+                            "이중전공: "+str(p.grade_dict['이중전공'])+"\n"+
+                            "2전공: "+str(p.grade_dict['2전공'])+"\n"+
+                            "교양(실용)외국어 :"+str(p.grade_dict['교외'])+"\n"+
+                            "교양: "+str(p.grade_dict['교양'])+"\n"+
+                            "부전공: "+str(p.grade_dict['부전공'])+"\n"+
+                            "교직: "+str(p.grade_dict['교직'])+"\n"+
+                            "자선: "+str(p.grade_dict['자선'])+"\n"+
+                            "총취득: "+str(p.grade_dict['총취득'])+"\n"
+                            +"\n"
+                            "총평점: "+str(p.grade_dict['총평점'])+"\n"+
+                            
+                            p.user_major_gpa
+                            
+                            +"\n"+"\n"+
+                            "재로그인하려면 채팅방 퇴장 후 재입장 바랍니다."
+                            
+                },
+                "keyboard":{
+                "type": "buttons",
+                "buttons":[
+                    "종합정보시스템 재로그인" # 키보드 버튼
+                    ]
+                }
+            }
         
     else:
         response_json={

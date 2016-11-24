@@ -40,6 +40,8 @@ class parsing_class():
         html = BeautifulSoup(self.studentinfo.text, "html.parser")
 
         student_college = html.find(string=re.compile('소속')).parent.next_sibling.next_sibling.next_element.next_element.string
+        
+        error_message =''
         try:
             student_major = student_college.next_element.next_element.next_element.next_element.string
         except AttributeError:
