@@ -51,7 +51,7 @@ def message(request):
         
         response_json={
             "message":{
-                "text": str(user.step)+"단계: "+"ID를 입력해주세요." # 메시지
+                "text": str(user.step)+"단계: "+"ID(학번)를 입력해주세요." # 메시지
             },
             "keyboard":{
                 "type": "text"
@@ -77,18 +77,20 @@ def message(request):
         user.save()
         
         p = parsing_class()
-        if p.login_check(user.hufs_id,user.hufs_pwd) == "잘못된 로그인입니다.":
-            user.step ==1
+        a = p.login_check(user.hufs_id,user.hufs_pwd)
+        
+        if a == 'fail':
+            user.step = 1
             user.save()
             
-            reponse_json={
+            response_json={
                 "message":{
                     "text": "잘못된 로그인입니다."
                     },
                 "keyboard":{
                 "type": "buttons",
                 "buttons":[
-                    "종합정보시스템 로그인" # 키보드 버튼
+                    "종합정보시스템 재로그인" # 키보드 버튼
                     ]
                 }
             }
@@ -103,7 +105,7 @@ def message(request):
                     "text": p.user_info1+"\n"+
                             p.user_info2+"\n"+
                             "\n"+
-                            "# 영역별 취득학점"+"\n"+"\n"+
+                            "| 영역별 취득학점"+p.today+"\n"+"\n"+
                             "1전공: "+str(p.grade_dict['1전공'])+"\n"+
                             "이중전공: "+str(p.grade_dict['이중전공'])+"\n"+
                             "2전공: "+str(p.grade_dict['2전공'])+"\n"+
@@ -119,7 +121,7 @@ def message(request):
                             p.user_major_gpa
                             
                             +"\n"+"\n"+
-                            "재로그인하려면 채팅방 퇴장 후 재입장 바랍니다."
+                            "※ 채팅 내용을 삭제하거나, 재로그인하려면 채팅방 퇴장 후 재입장 바랍니다."
                             
                 },
                 "keyboard":{

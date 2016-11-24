@@ -7,6 +7,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import time
+from datetime import datetime
 #from os.path import join, abspath
 
 head={'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
@@ -44,10 +45,11 @@ class parsing_class():
         error_message =''
         try:
             student_major = student_college.next_element.next_element.next_element.next_element.string
+            print("로그인 성공")
         except AttributeError:
-            error_message = "잘못된 로그인입니다."
-            
-        return error_message
+            error_message = "fail"
+            print("로그인 실패")
+            return error_message
         
     def login(self,user_id,user_pwd):
     
@@ -66,7 +68,7 @@ class parsing_class():
         try:
             student_major = student_college.next_element.next_element.next_element.next_element.string
         except AttributeError:
-            error_message = "잘못된 로그인입니다."
+            error_message = "login fail"
             
         #student_id= html.find(string=re.compile('학번')).parent.next_sibling.next_sibling.string
         student_id = user_id
@@ -172,12 +174,19 @@ class parsing_class():
         
         #-------------------------학생정보 나타내기--------------------------#
 
-        self.user_info1 = student_id + " " + student_first_major + "(" + student_other_major + ")"
+        self.user_info1 = str(student_id) + " " + student_first_major + "(" + student_other_major + ")"
         self.user_info2 = student_name_ko+"("+student_name+")"+"님, 반갑습니다."
         
         print(self.user_info1)
         print(self.user_info2)
 
+        now = datetime.today()
+        self.today = " ("+str(now.year)+"."+str(now.month)+"."+str(now.day)+")"
+        #now = datetime.datetime.now()
+        #self.today = now + datetime.timedelta(hours=9)
+        #self.today = str(self.today)
+        
+        print(self.today)
             
         self.user_major_gpa = "(전공평점: "+str(first_major_gpa)+")"
         print(self.grade_dict)
