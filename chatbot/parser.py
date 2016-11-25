@@ -177,8 +177,7 @@ class parsing_class():
         self.user_info1 = str(student_id) + " " + student_first_major + "(" + student_other_major + ")"
         self.user_info2 = student_name_ko+"("+student_name+")"+"님, 반갑습니다."
         
-        print(self.user_info1)
-        print(self.user_info2)
+
 
         now = datetime.today()
         self.today = " ("+str(now.year)+"."+str(now.month)+"."+str(now.day)+")"
@@ -186,10 +185,14 @@ class parsing_class():
         #self.today = now + datetime.timedelta(hours=9)
         #self.today = str(self.today)
         
-        print(self.today)
+        #print(self.today)
             
         self.user_major_gpa = "(전공평점: "+str(first_major_gpa)+")"
-        print(self.grade_dict)
-        print(self.user_major_gpa)
+        
+        #---디버깅용 코드---#
+        #print(self.user_info1)
+        #print(self.user_info2)
+        #print(self.grade_dict)
+        #print(self.user_major_gpa)
 
         #-----------------------------------------------------------------------------------#
