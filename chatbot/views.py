@@ -23,8 +23,6 @@ def message(request):
     response_json={}
     try:
         user=kakao_user.objects.get(user_key=key)
-        #user.step = 0
-        #user.save()
     except:
         user=kakao_user(user_key=key)
         user.save()
@@ -81,6 +79,8 @@ def message(request):
         
         if a == 'fail':
             user.step = 1
+            user.hufs_id='empty'
+            user.hufs_pwd='empty'
             user.save()
             
             response_json={
@@ -98,6 +98,8 @@ def message(request):
         else:
             p.login(user.hufs_id,user.hufs_pwd)
             user.step = 1
+            user.hufs_id='empty'
+            user.hufs_pwd='empty'
             user.save()
             
             response_json={
@@ -135,7 +137,7 @@ def message(request):
     else:
         response_json={
             "message":{
-                "text": str(user.step)+"단계: "+content+" 잘못된 로그인 입니다."+"\n"+" * 참고: 현재 베타테스트. 12월 중 정식오픈 예정"
+                "text": "오류 메시지(ErrorMessage)"+"\n"+"\n"+str(user.step)+"단계: "+content+"\n"+"\n"+"잘못된 로그인 입니다."+"\n"+"채팅방 퇴장 후 재입장 바랍니다."
             }
         }
     
@@ -145,8 +147,8 @@ def message(request):
 def reg_friend(request):
     value=json.loads(request.body.decode("utf-8"))
     key=value['user_key']
-    user=kakao_user(user_key=key)
-    user.save()
+    new_user=kakao_user(user_key=key)
+    new_user.save()
     return HttpResponse("")
 
 @csrf_exempt
