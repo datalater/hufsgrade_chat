@@ -79,8 +79,8 @@ def message(request):
         
         if a == 'fail':
             user.step = 1
-            user.hufs_id='empty'
-            user.hufs_pwd='empty'
+            user.hufs_id='*********'
+            user.hufs_pwd='*********'
             user.save()
             
             response_json={
@@ -98,8 +98,8 @@ def message(request):
         else:
             p.login(user.hufs_id,user.hufs_pwd)
             user.step = 1
-            user.hufs_id='empty'
-            user.hufs_pwd='empty'
+            user.hufs_id='*********'
+            user.hufs_pwd='*********'
             user.save()
             
             response_json={
